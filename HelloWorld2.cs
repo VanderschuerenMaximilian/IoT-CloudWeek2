@@ -14,14 +14,20 @@ namespace MCT.Function
     {
         [FunctionName("HelloWorld2")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "hello/world/welcome")] HttpRequest req,
             ILogger log)
         {
-            var name = "HelloWorld";
-
+            try
+            {
+                var name = "HelloWorld";
+                return new OkObjectResult(name);  
+            }
+            catch (System.Exception)
+            {
+                // return new StatusCodeResult(StatusCodes.Status500InternalServerError); // om een 500 terug te krijgen
+                return new BadRequestObjectResult("Something went wrong");                 // 400 terug krijgen
+            }
             
-
-            return new OkObjectResult(name);
         }
     }
 }
